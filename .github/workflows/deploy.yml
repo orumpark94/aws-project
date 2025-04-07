@@ -3,26 +3,33 @@ name: Deploy Node.js App
 on:
   workflow_dispatch:
 
+env:
+  DB_HOST: #변경 필요 mydb.abc123xyz.rds.amazonaws.com
+  DB_PORT: 3306
+  DB_NAME: myappdb
+  DB_USER: admin
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Install Ansible
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ansible
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
 
-    - name: Set up SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H YOUR.EC2.IP >> ~/.ssh/known_hosts
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ #변경필요 env.EC2_IP }} >> ~/.ssh/known_hosts
 
-    - name: Run Ansible Playbook
-      run: |
-        ansible-playbook playbook.yml -i inventory.ini
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook playbook.yml -i inventory.ini
