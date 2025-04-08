@@ -9,7 +9,7 @@ env:
   DB_NAME: mydatabase
   DB_USER: admin
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  EC2_IP: 54.180.157.47
+  EC2_IP: 52.78.241.230
 
 jobs:
   deploy:
