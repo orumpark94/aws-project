@@ -47,6 +47,7 @@ EC2와 RDS간 연동 확인 (정상 연동)
 
 4. .j2란? .j2는 Jinja2 템플릿 엔진 파일 템플릿 파일에서 변수({{ variable_name }})를 이용해서 동적으로 파일을 생성할 수 있게 해줌 Ansible에서 template 모듈과 함께 쓰임
 
- GitHub Actions와의 관계
+# 기타 내용 
+GitHub Actions와의 관계
 GitHub Actions 자체는 .j2 파일을 직접 다루지 않음, GitHub Actions에서 환경 변수나 Secrets를 Ansible에 넘겨줌. Ansible이 .j2 템플릿 파일을 읽어서, 거기에 변수들을 채워 넣음. 결과적으로 .env.j2 → .env 로 바뀌어서 EC2에 배포됨.
 
