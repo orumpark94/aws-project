@@ -32,7 +32,7 @@ jobs:
           ssh-keyscan -H ${{ env.EC2_IP }} >> ~/.ssh/known_hosts
 
       - name: Run Ansible Playbook
-        working-directory: ./aws-project
+        working-directory: ./
         run: |
           ansible-playbook playbook.yml -i inventory.ini \
             -e "DB_HOST=${{ env.DB_HOST }}" \
