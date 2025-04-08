@@ -9,7 +9,7 @@ env:
   DB_NAME: mydatabase
   DB_USER: admin
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  EC2_IP: 43.203.128.244
+  EC2_IP: 54.180.157.47
 
 jobs:
   deploy:
@@ -32,6 +32,7 @@ jobs:
           ssh-keyscan -H ${{ env.EC2_IP }} >> ~/.ssh/known_hosts
 
       - name: Run Ansible Playbook
+        working-directory: ./aws-project
         run: |
           ansible-playbook playbook.yml -i inventory.ini \
             -e "DB_HOST=${{ env.DB_HOST }}" \
