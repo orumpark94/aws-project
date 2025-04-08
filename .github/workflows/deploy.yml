@@ -4,11 +4,12 @@ on:
   workflow_dispatch:
 
 env:
-  DB_HOST: #변경 필요 mydb.abc123xyz.rds.amazonaws.com
+  DB_HOST: mydb.ctwoc02c4mqb.ap-northeast-2.rds.amazonaws.com
   DB_PORT: 3306
-  DB_NAME: myappdb
+  DB_NAME: mydatabase
   DB_USER: admin
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  EC2_IP: 43.203.128.244
 
 jobs:
   deploy:
@@ -28,8 +29,13 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ #변경필요 env.EC2_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ env.EC2_IP }} >> ~/.ssh/known_hosts
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook playbook.yml -i inventory.ini
+          ansible-playbook playbook.yml -i inventory.ini \
+            -e "DB_HOST=${{ env.DB_HOST }}" \
+            -e "DB_PORT=${{ env.DB_PORT }}" \
+            -e "DB_NAME=${{ env.DB_NAME }}" \
+            -e "DB_USER=${{ env.DB_USER }}" \
+            -e "DB_PASSWORD=${{ env.DB_PASSWORD }}"
